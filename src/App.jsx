@@ -43,7 +43,22 @@ function App() {
     const html = document.querySelector("html");
     html.setAttribute("data-theme","");
     html.setAttribute("data-theme",theme);
+    // localStorage.setItem("theme",theme);
   },[theme])
+
+  useEffect(() => {
+    const tasks = JSON.parse(localStorage.getItem("tasks"));
+    // const theme = localStorage.getItem("theme");
+    // console.log(theme,"theme");
+    
+    // setTheme(theme);
+    
+    if(tasks && tasks.length > 0) setTasks(tasks);
+  },[])
+
+  useEffect(() => {
+    localStorage.setItem("tasks",JSON.stringify(tasks));
+  },[tasks])
 
   return (
     <TaskProvider
