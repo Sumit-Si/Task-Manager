@@ -13,7 +13,7 @@ function TaskList() {
       </h2>
 
       {tasks.length > 0 ? (
-        tasks.map((task) => <Task task={task} />)
+        tasks.map((task) => <div key={task.id}><Task task={task} /></div>)
       ) : (
         <h3 className="bg-secondary-content/30 py-2 text-center text-sm rounded-lg dark:text-secondary text-secondary/50">
           No Task Yet!

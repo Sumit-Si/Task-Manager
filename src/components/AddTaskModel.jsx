@@ -1,20 +1,19 @@
-import React, { useState } from "react";
-import { XIcon } from "lucide-react";
-import { z } from "zod";
-import {zodResolver} from "@hookform/resolvers/zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import React from "react";
 import { useForm } from "react-hook-form";
+import {z} from "zod";
+
 
 const taskSchema = z.object({
   task: z.string().trim().min(3, "Task must be at least 3 characters long"),
   description: z
-      .string()
-      .trim()
-      .min(10, "Description should be at least 10 characters long")
-      .optional(),
+    .string()
+    .trim()
+    .min(10, "Description should be at least 10 characters long")
+    .optional(),
 });
 
-function EditModel({ title, description, editModelRef, handleUpdateTask }) {
-
+function AddTaskModel({addModelRef}) {
   const {
     register,
     handleSubmit,
@@ -23,8 +22,8 @@ function EditModel({ title, description, editModelRef, handleUpdateTask }) {
     resolver: zodResolver(taskSchema),
     defaultValues: {
       task: title,
-      description:description
-    }
+      description: description,
+    },
   });
 
   const validateForm = (data) => {
@@ -32,10 +31,10 @@ function EditModel({ title, description, editModelRef, handleUpdateTask }) {
   };
 
   return (
-    <dialog ref={editModelRef} className="modal">
+    <dialog ref={addModelRef} className="modal">
       <div className="modal-box max-w-sm">
         <h3 className="font-bold text-lg text-center py-2 text-secondary">
-          Edit Task
+          Add Task
         </h3>
         <form
           onSubmit={handleSubmit(validateForm)}
@@ -79,7 +78,7 @@ function EditModel({ title, description, editModelRef, handleUpdateTask }) {
             )}
           </div>
           <button type="submit" className="btn btn-secondary">
-            Update
+            Add
           </button>
           {/* if there is a button in form, it will close the modal */}
           <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
@@ -91,4 +90,4 @@ function EditModel({ title, description, editModelRef, handleUpdateTask }) {
   );
 }
 
-export default EditModel;
+export default AddTaskModel;
