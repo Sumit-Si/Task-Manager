@@ -1,39 +1,28 @@
-import React, { useState } from "react";
-import { useTask } from "../context/TaskContext";
+import React, { useRef } from "react";
+import AddTaskModel from "./AddTaskModel";
 
 function Form() {
-  const {addTask} = useTask();
-  const [task,setTask] = useState("");
-  const [descr,setDescr] = useState("");
+  const addModelRef = useRef(null);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    addTask({"title": task,"description":descr})
-    setTask("");
-    setDescr("");
-  }
+  const handleAddTaskModel = () => {
+    addModelRef.current?.showModal();
+  };
 
   return (
-    <form onSubmit={handleSubmit} className="w-full flex p-1">
-      <div className="flex-[80%] flex gap-1 pr-2">
-        <input
-          type="text"
-          placeholder="Task"
-          value={task}
-          name="task"
-          onChange={(e) => setTask(e.target.value)}
-          className="input input-neutral dark:input-secondary shadow-md border-2 w-full"
-        />
-        <textarea
-          placeholder="Description"
-          value={descr}
-          name="desc"
-          onChange={(e) => setDescr(e.target.value)}
-          className="textarea input-neutral dark:input-secondary shadow-md border-2 w-full">
-        </textarea>
+    <>
+      <div className="w-full max-h-[15%] h-[15%] flex p-1 items-center justify-center">
+        <div
+          className="flex-3/4 cursor-pointer hover:bg-secondary-content bg-secondary/10 hover:shadow-secondary-content shadow-md shadow-secondary/30 p-3 rounded-lg"
+          onClick={handleAddTaskModel}
+        >
+          <h3 className="text-sm font-semibold text-center text-secondary">
+            Add Todo
+          </h3>
+        </div>
+        
       </div>
-      <button type="submit" className="flex-[15%] btn btn-secondary dark:btn-secondary/90 inline-block shadow-lg shadow-secondary/20">Add</button>
-    </form>
+      <AddTaskModel addModelRef={addModelRef} />
+    </>
   );
 }
 

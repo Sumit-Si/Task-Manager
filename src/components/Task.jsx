@@ -1,16 +1,12 @@
 import React, { useRef, useState } from "react";
-import { CheckCircle, Clock, Hourglass } from "lucide-react";
 import { useTask } from "../context/TaskContext";
 import EditModel from "./EditModel";
-import AddTaskModel from "./AddTaskModel";
+import { Pencil, Trash } from 'lucide-react';
 
 function Task({ task }) {
   const editModelRef = useRef(null);
-  const addModelRef = useRef(null);
-  console.log(task, "task");
   const { updateTask, deleteTask, toggleComplete } = useTask();
   const { id, title, description, completed } = task;
-  const [isTaskEditable,setIsTaskEditable] = useState(false);
 
   const handleToggleTask = () => {
     toggleComplete(id);
@@ -18,21 +14,18 @@ function Task({ task }) {
 
   const handleEditTask = () => {
     editModelRef.current?.showModal();
-  }
+  };
 
-  const handleUpdateTask = (e,task,descr) => {
-    console.log(task,descr,"updated task");
-    
-    e.preventDefault();
-    if(completed) return;
+  const handleUpdateTask = (data) => {
+    if (completed) return;
+    updateTask(id, {
+      ...task,
+      title: data.task,
+      description: data.description,
+    });
 
-    if(isTaskEditable) {
-      updateTask(id,{...task,"title":task,"description":descr})
-    } else {
-      setIsTaskEditable(prev => !prev);
-    }
     editModelRef.current?.close();
-  }
+  };
 
   const handleDeleteTask = () => {
     deleteTask(id);
@@ -52,24 +45,28 @@ function Task({ task }) {
               className="cursor-pointer"
               checked={completed}
               onChange={handleToggleTask}
-              name=""
-              id=""
             />
           </div>
           <div>
-            <h3 className={`${completed ? "line-through" : ""} font-semibold`}>{title}</h3>
-            <p className="text-xs text-base-content/70">{description}</p>
+            <h3 className={`${completed && "line-through"} font-semibold`}>
+              {title}
+            </h3>
+            <p className="text-xs text-base-content/70 text-wrap line-clamp-2">{description}</p>
           </div>
         </div>
         <div className="flex-1/3 flex gap-2 justify-end">
-          <button className="btn" disabled={completed} onClick={handleEditTask}>
-            Edit
+          <button className="bg-secondary-content cursor-pointer p-1 rounded-md shadow-md shadow-secondary-content/50 disabled:opacity-30 disabled:cursor-not-allowed" disabled={completed} onClick={handleEditTask}>
+            <Pencil className="w-5 h-5" />
           </button>
-          <button className="btn" onClick={handleDeleteTask}>
-            Delete
+          <button className="bg-secondary-content cursor-pointer p-1 rounded-md shadow-md shadow-secondary-content/50" onClick={handleDeleteTask}>
+            <Trash className="w-5 h-5 text-error" />
           </button>
-          <EditModel handleUpdateTask={handleUpdateTask} editModelRef={editModelRef} title={title} description={description} />
-          <AddTaskModel addModelRef={addModelRef} />
+          <EditModel
+            handleUpdateTask={handleUpdateTask}
+            editModelRef={editModelRef}
+            title={title}
+            description={description}
+          />
         </div>
       </div>
     </div>

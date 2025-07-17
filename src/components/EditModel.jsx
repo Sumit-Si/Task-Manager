@@ -28,7 +28,9 @@ function EditModel({ title, description, editModelRef, handleUpdateTask }) {
   });
 
   const validateForm = (data) => {
-    console.log(data, "data");
+    if(data) {
+      handleUpdateTask(data);
+    }
   };
 
   return (
@@ -45,14 +47,12 @@ function EditModel({ title, description, editModelRef, handleUpdateTask }) {
           <div className="">
             <div>
               <input
-                className={`input input-secondary w-full ${
-                  errors.task ? "input-error" : ""
+                className={`input w-full ${
+                  errors.task ? "input-error" : "input-secondary"
                 }`}
                 type="text"
                 {...register("task")}
                 placeholder="Task..."
-                name=""
-                id=""
               />
             </div>
             {errors.task && (
@@ -61,16 +61,13 @@ function EditModel({ title, description, editModelRef, handleUpdateTask }) {
           </div>
           <div className="mb-2">
             <div>
-              <input
-                className={`input input-secondary w-full ${
-                  errors.description ? "input-error" : ""
+              <textarea
+                className={`input w-full max-h-[10em] h-[10em] ${
+                  errors.description ? "input-error" : "input-secondary"
                 }`}
-                type="text"
                 {...register("description")}
                 placeholder="Description..."
-                name=""
-                id=""
-              />
+              ></textarea>
             </div>
             {errors.description && (
               <p className="text-red-500 text-sm mt-1">

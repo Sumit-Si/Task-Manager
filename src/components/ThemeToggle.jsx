@@ -5,7 +5,6 @@ function ThemeToggle() {
   const {theme,darkTheme,lightTheme} = useTask();
 
   const handleTheme = (e) => {
-    console.log(e);
     const isDarkSelected = e.currentTarget.checked;
 
     if(isDarkSelected) {

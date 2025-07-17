@@ -1,7 +1,9 @@
-import { zodResolver } from "@hookform/resolvers/zod";
+import { XIcon } from "lucide-react";
 import React from "react";
 import { useForm } from "react-hook-form";
 import {z} from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useTask } from "../context/TaskContext";
 
 
 const taskSchema = z.object({
@@ -14,20 +16,21 @@ const taskSchema = z.object({
 });
 
 function AddTaskModel({addModelRef}) {
+  const {addTask} = useTask();
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm({
     resolver: zodResolver(taskSchema),
-    defaultValues: {
-      task: title,
-      description: description,
-    },
   });
 
+
   const validateForm = (data) => {
-    console.log(data, "data");
+    if(data) {
+      addTask({"title": data.task,"description":data.description,"completed":false})
+    }
+    addModelRef.current?.close();
   };
 
   return (
@@ -39,19 +42,16 @@ function AddTaskModel({addModelRef}) {
         <form
           onSubmit={handleSubmit(validateForm)}
           className="flex flex-col py-4 gap-2"
-          method="dialog"
         >
-          <div className="">
+          <div>
             <div>
               <input
-                className={`input input-secondary w-full ${
-                  errors.task ? "input-error" : ""
+                className={`input  w-full ${
+                  errors.task ? "input-error" : "input-secondary"
                 }`}
                 type="text"
                 {...register("task")}
                 placeholder="Task..."
-                name=""
-                id=""
               />
             </div>
             {errors.task && (
@@ -60,16 +60,13 @@ function AddTaskModel({addModelRef}) {
           </div>
           <div className="mb-2">
             <div>
-              <input
-                className={`input input-secondary w-full ${
-                  errors.description ? "input-error" : ""
+              <textarea
+                className={`input w-full max-h-[10em] h-[10em] ${
+                  errors.description ? "input-error" : "input-secondary"
                 }`}
-                type="text"
                 {...register("description")}
                 placeholder="Description..."
-                name=""
-                id=""
-              />
+              ></textarea>
             </div>
             {errors.description && (
               <p className="text-red-500 text-sm mt-1">
@@ -81,7 +78,7 @@ function AddTaskModel({addModelRef}) {
             Add
           </button>
           {/* if there is a button in form, it will close the modal */}
-          <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
+          <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" onClick={() => addModelRef.current?.close()}>
             <XIcon />
           </button>
         </form>
