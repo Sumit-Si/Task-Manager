@@ -21,6 +21,7 @@ function AddTaskModel({addModelRef}) {
     register,
     handleSubmit,
     formState: { errors },
+    reset
   } = useForm({
     resolver: zodResolver(taskSchema),
   });
@@ -30,6 +31,7 @@ function AddTaskModel({addModelRef}) {
     if(data) {
       addTask({"title": data.task,"description":data.description,"completed":false})
     }
+    reset();
     addModelRef.current?.close();
   };
 

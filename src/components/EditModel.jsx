@@ -19,6 +19,7 @@ function EditModel({ title, description, editModelRef, handleUpdateTask }) {
     register,
     handleSubmit,
     formState: { errors },
+    reset
   } = useForm({
     resolver: zodResolver(taskSchema),
     defaultValues: {
@@ -31,6 +32,7 @@ function EditModel({ title, description, editModelRef, handleUpdateTask }) {
     if(data) {
       handleUpdateTask(data);
     }
+    reset();
   };
 
   return (
