@@ -1,35 +1,34 @@
-import React, { useState } from "react";
+import React from "react";
 import { XIcon } from "lucide-react";
 import { z } from "zod";
-import {zodResolver} from "@hookform/resolvers/zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
 const taskSchema = z.object({
   task: z.string().trim().min(3, "Task must be at least 3 characters long"),
   description: z
-      .string()
-      .trim()
-      .min(10, "Description should be at least 10 characters long")
-      .optional(),
+    .string()
+    .trim()
+    .min(10, "Description should be at least 10 characters long")
+    .optional(),
 });
 
 function EditModel({ title, description, editModelRef, handleUpdateTask }) {
-
   const {
     register,
     handleSubmit,
     formState: { errors },
-    reset
+    reset,
   } = useForm({
     resolver: zodResolver(taskSchema),
     defaultValues: {
       task: title,
-      description:description
-    }
+      description: description,
+    },
   });
 
   const validateForm = (data) => {
-    if(data) {
+    if (data) {
       handleUpdateTask(data);
     }
     reset();
@@ -81,7 +80,11 @@ function EditModel({ title, description, editModelRef, handleUpdateTask }) {
             Update
           </button>
           {/* if there is a button in form, it will close the modal */}
-          <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
+          <button
+            type="button"
+            className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
+            onClick={() => editModelRef.current?.close()}
+          >
             <XIcon />
           </button>
         </form>

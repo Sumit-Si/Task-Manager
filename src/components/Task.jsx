@@ -1,7 +1,7 @@
-import React, { useRef, useState } from "react";
+import React, { useRef } from "react";
 import { useTask } from "../context/TaskContext";
 import EditModel from "./EditModel";
-import { Pencil, Trash } from 'lucide-react';
+import { Pencil, Trash } from "lucide-react";
 
 function Task({ task }) {
   const editModelRef = useRef(null);
@@ -51,14 +51,23 @@ function Task({ task }) {
             <h3 className={`${completed && "line-through"} font-semibold`}>
               {title}
             </h3>
-            <p className="text-xs text-base-content/70 text-wrap line-clamp-2">{description}</p>
+            <p className="text-xs text-base-content/70 text-wrap line-clamp-2">
+              {description}
+            </p>
           </div>
         </div>
         <div className="flex-1/3 flex gap-2 justify-end">
-          <button className="bg-secondary-content cursor-pointer p-1 rounded-md shadow-md shadow-secondary-content/50 disabled:opacity-30 disabled:cursor-not-allowed" disabled={completed} onClick={handleEditTask}>
+          <button
+            className="bg-secondary-content cursor-pointer p-1 rounded-md shadow-md shadow-secondary-content/50 disabled:opacity-30 disabled:cursor-not-allowed"
+            disabled={completed}
+            onClick={handleEditTask}
+          >
             <Pencil className="w-5 h-5" />
           </button>
-          <button className="bg-secondary-content cursor-pointer p-1 rounded-md shadow-md shadow-secondary-content/50" onClick={handleDeleteTask}>
+          <button
+            className="bg-secondary-content cursor-pointer p-1 rounded-md shadow-md shadow-secondary-content/50"
+            onClick={handleDeleteTask}
+          >
             <Trash className="w-5 h-5 text-error" />
           </button>
           <EditModel
